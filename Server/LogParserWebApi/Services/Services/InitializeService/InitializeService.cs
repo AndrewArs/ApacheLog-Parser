@@ -1,10 +1,11 @@
-﻿using System.Diagnostics;
-using LogParserWebApi.DAL;
+﻿using LogParserWebApi.DAL.Repositories;
+using LogParserWebApi.Services.Services.ParseService;
+using System.Diagnostics;
 using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Text;
 
-namespace LogParserWebApi.Services
+namespace LogParserWebApi.Services.Services.InitializeService
 {
     public class InitializeService : IInitializeService
     {
@@ -71,6 +72,8 @@ namespace LogParserWebApi.Services
                     }
                 }
             }
+
+            _logRepository.SaveChanges();
 
             return sw.ElapsedMilliseconds;
         }

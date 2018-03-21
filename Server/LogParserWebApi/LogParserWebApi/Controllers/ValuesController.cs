@@ -1,5 +1,6 @@
-﻿using LogParserWebApi.Services;
+﻿using LogParserWebApi.Services.Services.InitializeService;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace LogParserWebApi.Controllers
 {
@@ -18,7 +19,13 @@ namespace LogParserWebApi.Controllers
         {
             return Ok(_initializeService.Initialize());
         }
-        
+
+        //[HttpGet]
+        //public IActionResult GetLogs(DateTime start, DateTime end, int offset, int limit)
+        //{
+        //    return Ok(_initializeService.Initialize());
+        //}
+
         [HttpPost]
         public void Post([FromBody]string log)
         {

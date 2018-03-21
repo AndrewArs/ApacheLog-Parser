@@ -1,16 +1,16 @@
-﻿using LogParserWebApi.DomainModels;
+﻿using LogParserWebApi.DomainModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace LogParserWebApi.Services
+namespace LogParserWebApi.Services.Services.ParseService
 {
     public class ParserService : IParserService
     {
-        private readonly string[] _ignorePaths = { ".css", ".js", ".jpg", ".gif", ".eps", ".bmp", ".JPG", ".jpeg", ".xbm", ".GIF" };
+        private readonly string[] _ignorePaths = { ".css", ".js",
+            ".jpg", ".gif", ".eps", ".bmp", ".JPG", ".jpeg", ".xbm", ".GIF" };
         private readonly Regex _regex;
 
         public List<string> Extensions { get; set; } = new List<string>();
@@ -33,21 +33,6 @@ namespace LogParserWebApi.Services
             }
 
             var splitedPath = match.Groups["path"].Value.Split('?');
-
-            //var split = splitedPath[0].Split('.');
-
-            //if (split.Length > 1)
-            //{
-            //    if (!Extensions.Contains(split.Last()))
-            //    {
-            //        Extensions.Add(split.Last());
-
-            //        using (var stream = File.AppendText(@"Assets\extensions.txt"))
-            //        {
-            //            stream.WriteLine(split.Last());
-            //        }
-            //    }
-            //}
 
             if (_ignorePaths.Any(forbidden => splitedPath[0].EndsWith(forbidden)))
             {

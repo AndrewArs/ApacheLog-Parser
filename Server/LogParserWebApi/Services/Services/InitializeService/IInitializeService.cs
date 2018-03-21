@@ -1,4 +1,4 @@
-﻿namespace LogParserWebApi.Services
+﻿namespace LogParserWebApi.Services.Services.InitializeService
 {
     public interface IInitializeService
     {

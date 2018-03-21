@@ -1,4 +1,4 @@
-﻿using LogParserWebApi.DomainModels;
+﻿using LogParserWebApi.DomainModels.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LogParserWebApi.DAL.Context

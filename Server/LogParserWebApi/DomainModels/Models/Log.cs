@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LogParserWebApi.DomainModels
+namespace LogParserWebApi.DomainModels.Models
 {
     public class Log
     {

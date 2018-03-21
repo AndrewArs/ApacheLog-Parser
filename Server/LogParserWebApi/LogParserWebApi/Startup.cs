@@ -1,6 +1,8 @@
-﻿using LogParserWebApi.DAL;
-using LogParserWebApi.DAL.Context;
-using LogParserWebApi.Services;
+﻿using LogParserWebApi.DAL.Context;
+using LogParserWebApi.DAL.Repositories;
+using LogParserWebApi.Services.Services.InitializeService;
+using LogParserWebApi.Services.Services.LogService;
+using LogParserWebApi.Services.Services.ParseService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,7 @@ namespace LogParserWebApi
 
             services.AddTransient<IInitializeService, InitializeService>();
             services.AddTransient<IParserService, ParserService>();
+            services.AddTransient<ILogService, LogService>();
 
             services.AddTransient<ILogRepository, LogRepository>();
 
