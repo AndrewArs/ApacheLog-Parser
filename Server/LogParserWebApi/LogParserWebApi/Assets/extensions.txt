@@ -1,0 +1,4 @@
+Test 21852 lines
+1) 240885 ms (ReadAllLines)
+2) 244013 ms (MemoryMappedFile + SreamReader)
+3) 241342 ms (StreamReader)

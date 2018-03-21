@@ -23,8 +23,7 @@ namespace LogParserWebApi
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<LogContext>(options =>
-                options.UseSqlServer(connection));
+            services.AddDbContext<LogContext>(options => options.UseSqlServer(connection));
 
             services.AddTransient<IInitializeService, InitializeService>();
             services.AddTransient<IParserService, ParserService>();

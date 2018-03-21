@@ -6,9 +6,8 @@ namespace LogParserWebApi.DAL.Context
     public class LogContext : DbContext
     {
         public DbSet<Log> Logs { get; set; }
-
-        public LogContext() : base() { }
-        public LogContext(DbContextOptions<LogContext> options)
+        
+        public LogContext(DbContextOptions options)
             : base(options)
         {
         }

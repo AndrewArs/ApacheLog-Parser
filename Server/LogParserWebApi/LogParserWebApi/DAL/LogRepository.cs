@@ -9,14 +9,15 @@ namespace LogParserWebApi.DAL
     {
         private readonly LogContext _logContext;
 
-        public LogRepository()
+        public LogRepository(LogContext logContext)
         {
-            _logContext = new LogContext();
+            _logContext = logContext;
         }
 
         public void Add(Log logUnit)
         {
-            return;
+            _logContext.Add(logUnit);
+            _logContext.SaveChanges();
         }
 
         public IEnumerable<Log> GetTopHosts(DateTime start = default(DateTime),
@@ -37,18 +38,18 @@ namespace LogParserWebApi.DAL
             return null;
         }
 
-        private bool disposed = false;
+        private bool _disposed;
 
         public virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     _logContext.Dispose();
                 }
             }
-            disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()

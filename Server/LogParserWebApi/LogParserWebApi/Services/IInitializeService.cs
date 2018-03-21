@@ -2,6 +2,6 @@
 {
     public interface IInitializeService
     {
-        void Initialize();
+        long Initialize();
     }
 }

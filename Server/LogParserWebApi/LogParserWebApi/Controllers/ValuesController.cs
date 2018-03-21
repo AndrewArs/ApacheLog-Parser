@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LogParserWebApi.Services;
+﻿using LogParserWebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LogParserWebApi.Controllers
@@ -14,24 +13,14 @@ namespace LogParserWebApi.Controllers
             _initializeService = initializeService;
         }
 
-        // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Initialize()
         {
-            _initializeService.Initialize();
-            return new string[] { "value1", "value2" };
+            return Ok(_initializeService.Initialize());
         }
-
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
+        
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]string log)
         {
         }
 

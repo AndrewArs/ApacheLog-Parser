@@ -14,6 +14,5 @@ namespace LogParserWebApi.DomainModels
         public int StatusCode { get; set; }
         public int? Length { get; set; }
         public string Method { get; set; }
-        public string HttpVersion { get; set; }
     }
 }
