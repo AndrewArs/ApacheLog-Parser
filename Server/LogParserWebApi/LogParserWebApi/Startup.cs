@@ -33,7 +33,7 @@ namespace LogParserWebApi
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "Parser API", Version = "v1" });
+                c.SwaggerDoc("v1", new Info { Title = "Logs API", Version = "v1" });
             });
         }
 
@@ -50,7 +50,7 @@ namespace LogParserWebApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Logs API V1");
             });
         }
     }

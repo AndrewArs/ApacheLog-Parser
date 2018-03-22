@@ -7,17 +7,10 @@ namespace DAL.Repositories
 {
     public interface ILogRepository : IDisposable
     {
-        void Add(Log logUnit);
+        Task<IEnumerable<string>> GetTopHosts(DateTime? start, DateTime? end, int? n);
 
-        Task<IEnumerable<string>> GetTopHosts(DateTime start = default(DateTime),
-            DateTime end = default(DateTime), int n = 10);
+        Task<IEnumerable<string>> GetTopRoutes(DateTime? start, DateTime? end, int? n);
 
-        Task<IEnumerable<string>> GetTopRoutes(DateTime start = default(DateTime),
-            DateTime end = default(DateTime), int n = 10);
-
-        Task<IEnumerable<Log>> GetLogs(DateTime start = default(DateTime),
-            DateTime end = default(DateTime), int offset = 0, int limit = 10);
-
-        void SaveChanges();
+        Task<IEnumerable<Log>> GetLogs(DateTime? start, DateTime? end, int? offset, int? limit);
     }
 }

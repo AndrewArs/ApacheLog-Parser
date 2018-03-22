@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using Dto;
+﻿using Dto;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.LogService;
 
@@ -25,6 +25,7 @@ namespace LogParserWebApi.Controllers
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
         [HttpGet]
+        [ResponseCache(Duration = 3600)]
         [Route("/GetHosts")]
         public async Task<IActionResult> GetTopHosts([FromQuery] HostsFilterDto filter)
         {
@@ -37,6 +38,7 @@ namespace LogParserWebApi.Controllers
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
         [HttpGet]
+        [ResponseCache(Duration = 3600)]
         [Route("/GetRoutes")]
         public async Task<IActionResult> GetTopRoutes([FromQuery] RoutesFilterDto filter)
         {
@@ -49,6 +51,7 @@ namespace LogParserWebApi.Controllers
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
         [HttpGet]
+        [ResponseCache(Duration = 3600)]
         [Route("/GetLogs")]
         public async Task<IActionResult> GetLogs([FromQuery] LogsFilterDto filter)
         {

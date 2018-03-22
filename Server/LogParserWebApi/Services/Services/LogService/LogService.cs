@@ -23,7 +23,7 @@ namespace Services.Services.LogService
         /// <param name="offset">The offset.</param>
         /// <param name="limit">The limit.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Log>> GetLogs(DateTime start, DateTime end, int offset, int limit)
+        public async Task<IEnumerable<Log>> GetLogs(DateTime? start, DateTime? end, int? offset, int? limit)
         {
             return await _parserRepository.GetLogs(start, end, offset, limit);
         }
@@ -35,7 +35,7 @@ namespace Services.Services.LogService
         /// <param name="end">The end.</param>
         /// <param name="n">The number.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetTopHosts(DateTime start, DateTime end, int n)
+        public async Task<IEnumerable<string>> GetTopHosts(DateTime? start, DateTime? end, int? n)
         {
             return await _parserRepository.GetTopHosts(start, end, n);
         }
@@ -47,7 +47,7 @@ namespace Services.Services.LogService
         /// <param name="end">The end.</param>
         /// <param name="n">The number.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetTopRoutes(DateTime start, DateTime end, int n)
+        public async Task<IEnumerable<string>> GetTopRoutes(DateTime? start, DateTime? end, int? n)
         {
             return await _parserRepository.GetTopRoutes(start, end, n);
         }

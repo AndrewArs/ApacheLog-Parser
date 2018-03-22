@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using DAL.Context;
 using DomainModels.Models;
@@ -23,16 +24,7 @@ namespace DAL.Repositories
         {
             _logContext = logContext;
         }
-
-        /// <summary>
-        /// Adds the specified log unit.
-        /// </summary>
-        /// <param name="logUnit">The log unit.</param>
-        public void Add(Log logUnit)
-        {
-            _logContext.Logs.Add(logUnit);
-        }
-
+        
         /// <summary>
         /// Gets the top hosts.
         /// </summary>
@@ -40,40 +32,12 @@ namespace DAL.Repositories
         /// <param name="end">The end.</param>
         /// <param name="n">The n.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetTopHosts(DateTime start = default(DateTime),
-            DateTime end = default(DateTime), int n = 10)
+        public async Task<IEnumerable<string>> GetTopHosts(DateTime? start, DateTime? end, int? n)
         {
-            if (start == default(DateTime) && end == default(DateTime))
-            {
-                return await _logContext.Logs.GroupBy(log => log.Host)
-                                             .OrderByDescending(g => g.Count())
-                                             .Take(n)
-                                             .Select(log => log.Key)
-                                             .ToListAsync();
-            }
-            if (end == default(DateTime))
-            {
-                return await _logContext.Logs.Where(log => log.Date >= start)
-                                             .GroupBy(log => log.Host)
-                                             .OrderByDescending(g => g.Count())
-                                             .Take(n)
-                                             .Select(log => log.Key)
-                                             .ToListAsync();
-            }
-            if (start == default(DateTime))
-            {
-                return await _logContext.Logs.Where(log => log.Date <= end)
-                                             .GroupBy(log => log.Host)
-                                             .OrderByDescending(g => g.Count())
-                                             .Take(n)
-                                             .Select(log => log.Key)
-                                             .ToListAsync();
-            }
-
-            return await _logContext.Logs.Where(log => log.Date >= start && log.Date <= end)
+            return await _logContext.Logs.Where(CreateDateExpression(start, end))
                                          .GroupBy(log => log.Host)
                                          .OrderByDescending(g => g.Count())
-                                         .Take(n)
+                                         .Take(n.Value)
                                          .Select(log => log.Key)
                                          .ToListAsync();
         }
@@ -85,40 +49,12 @@ namespace DAL.Repositories
         /// <param name="end">The end.</param>
         /// <param name="n">The n.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetTopRoutes(DateTime start = default(DateTime),
-            DateTime end = default(DateTime), int n = 10)
+        public async Task<IEnumerable<string>> GetTopRoutes(DateTime? start, DateTime? end, int? n)
         {
-            if (start == default(DateTime) && end == default(DateTime))
-            {
-                return await _logContext.Logs.GroupBy(log => log.Route)
-                                             .OrderByDescending(g => g.Count())
-                                             .Take(n)
-                                             .Select(log => log.Key)
-                                             .ToListAsync();
-            }
-            if (end == default(DateTime))
-            {
-                return await _logContext.Logs.Where(log => log.Date >= start)
-                                             .GroupBy(log => log.Route)
-                                             .OrderByDescending(g => g.Count())
-                                             .Take(n)
-                                             .Select(log => log.Key)
-                                             .ToListAsync();
-            }
-            if (start == default(DateTime))
-            {
-                return await _logContext.Logs.Where(log => log.Date <= end)
-                                             .GroupBy(log => log.Route)
-                                             .OrderByDescending(g => g.Count())
-                                             .Take(n)
-                                             .Select(log => log.Key)
-                                             .ToListAsync();
-            }
-
-            return await _logContext.Logs.Where(log => log.Date >= start && log.Date <= end)
+            return await _logContext.Logs.Where(CreateDateExpression(start, end))
                                          .GroupBy(log => log.Route)
                                          .OrderByDescending(g => g.Count())
-                                         .Take(n)
+                                         .Take(n.Value)
                                          .Select(log => log.Key)
                                          .ToListAsync();
         }
@@ -131,46 +67,33 @@ namespace DAL.Repositories
         /// <param name="offset">The offset.</param>
         /// <param name="limit">The limit.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Log>> GetLogs(DateTime start = default(DateTime),
-            DateTime end = default(DateTime), int offset = 0, int limit = 10)
+        public async Task<IEnumerable<Log>> GetLogs(DateTime? start, DateTime? end, int? offset, int? limit)
         {
-            if (start == default(DateTime) && end == default(DateTime))
-            {
-                return await _logContext.Logs.OrderBy(log => log.Date)
-                                             .Skip(offset)
-                                             .Take(limit)
-                                             .ToListAsync();
-            }
-            if (end == default(DateTime))
-            {
-                return await _logContext.Logs.Where(log => log.Date >= start)
-                                             .OrderBy(log => log.Date)
-                                             .Skip(offset)
-                                             .Take(limit)
-                                             .ToListAsync();
-            }
-            if (start == default(DateTime))
-            {
-                return await _logContext.Logs.Where(log => log.Date <= end)
-                                             .OrderBy(log => log.Date)
-                                             .Skip(offset)
-                                             .Take(limit)
-                                             .ToListAsync();
-            }
-
-            return await _logContext.Logs.Where(log => log.Date >= start && log.Date <= end)
+            return await _logContext.Logs.Where(CreateDateExpression(start, end))
                                          .OrderBy(log => log.Date)
-                                         .Skip(offset)
-                                         .Take(limit)
+                                         .Skip(offset.Value)
+                                         .Take(limit.Value)
                                          .ToListAsync();
         }
-
-        /// <summary>
-        /// Saves the changes.
-        /// </summary>
-        public void SaveChanges()
+        
+        private Expression<Func<Log, bool>> CreateDateExpression(DateTime? start, DateTime? end)
         {
-            _logContext.SaveChanges();
+            if(start.HasValue && end.HasValue)
+            {
+                return log => log.Date >= start && log.Date <= end;
+            }
+            else if(start.HasValue)
+            {
+                return log => log.Date >= start;
+            }
+            else if (end.HasValue)
+            {
+                return log => log.Date <= end;
+            }
+            else
+            {
+                return log => true;
+            }
         }
 
         /// <summary>
