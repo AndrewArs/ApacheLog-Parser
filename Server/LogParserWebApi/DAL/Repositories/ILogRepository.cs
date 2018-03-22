@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LogParserWebApi.DomainModels.Models;
+using DomainModels.Models;
 
-namespace LogParserWebApi.DAL.Repositories
+namespace DAL.Repositories
 {
     public interface ILogRepository : IDisposable
     {

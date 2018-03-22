@@ -1,9 +1,9 @@
-﻿using LogParserWebApi.DomainModels.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DomainModels.Models;
 
-namespace LogParserWebApi.Services.Services.LogService
+namespace Services.Services.LogService
 {
     public interface ILogService
     {

@@ -1,11 +1,11 @@
-﻿using LogParserWebApi.DomainModels.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DomainModels.Models;
 
-namespace LogParserWebApi.Services.Services.ParseService
+namespace Services.ParserService
 {
     public class ParserService : IParserService
     {
@@ -18,11 +18,16 @@ namespace LogParserWebApi.Services.Services.ParseService
         public ParserService()
         {
             _regex = new Regex(@"(?<host>[^ ]*) - - " +
-                @"\[(?<date>[^ ]* [^ ]*)\] " +
-                @"""(?<request_method>[^ ]*) (?<path>[^ ]*) [^ ]*"" " +
-                @"(?<status>[^ ]*) (?<length>[^ ]*)", RegexOptions.Compiled);
+                               @"\[(?<date>[^ ]* [^ ]*)\] " +
+                               @"""(?<request_method>[^ ]*) (?<path>[^ ]*) [^ ]*"" " +
+                               @"(?<status>[^ ]*) (?<length>[^ ]*)", RegexOptions.Compiled);
         }
 
+        /// <summary>
+        /// Parses the specified input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
         public Log Parse(string input)
         {
             var match = _regex.Match(input);

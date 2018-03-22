@@ -1,13 +1,11 @@
-﻿using LogParserWebApi.DAL.Context;
-using LogParserWebApi.DAL.Repositories;
-using LogParserWebApi.Services.Services.InitializeService;
-using LogParserWebApi.Services.Services.LogService;
-using LogParserWebApi.Services.Services.ParseService;
+﻿using DAL.Context;
+using DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Services.LogService;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace LogParserWebApi
@@ -24,11 +22,9 @@ namespace LogParserWebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
+            var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<LogContext>(options => options.UseSqlServer(connection));
-
-            services.AddTransient<IInitializeService, InitializeService>();
-            services.AddTransient<IParserService, ParserService>();
+            
             services.AddTransient<ILogService, LogService>();
 
             services.AddTransient<ILogRepository, LogRepository>();
