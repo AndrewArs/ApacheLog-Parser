@@ -76,6 +76,6 @@ namespace DomainModels.Models
         /// <value>
         /// The geolocation.
         /// </value>
-        public Geolocation Geolocation { get; set; }
+        public string Geolocation{ get; set; }
     }
 }

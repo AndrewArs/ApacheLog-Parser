@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
-using System.IO;
+﻿using System.IO;
+using System.IO.MemoryMappedFiles;
+using System.Text;
 using System.Threading.Tasks;
 using DAL.Repositories;
 using Services.GeolocationService;
@@ -28,64 +29,33 @@ namespace Services.MainWindowService
         /// </summary>
         /// <param name="dataPath">The data path.</param>
         /// <returns></returns>
-        public async Task Parse(string dataPath)
+        public async Task<bool> Parse(string dataPath)
         {
-            var logs = File.ReadAllLines(dataPath);
-            foreach (var logString in logs)
+            using (var mmFile = MemoryMappedFile.CreateFromFile(dataPath))
             {
-                var log = _parserService.Parse(logString);
+                var mmvStream = mmFile.CreateViewStream();
 
-                if (log == null)
+                using (var sr = new StreamReader(mmvStream, Encoding.ASCII))
                 {
-                    continue;
-                }
+                    while (!sr.EndOfStream)
+                    {
+                        var logString = sr.ReadLine();
+                        var log = _parserService.Parse(logString);
 
-                log.Geolocation = await _geolocationService.GetGeolocation(log.Host);
-                _logRepository.Add(log);
+                        if (log == null)
+                        {
+                            continue;
+                        }
+
+                        log.Geolocation = await _geolocationService.GetGeolocation(log.Host);
+                        _logRepository.Add(log);
+                    }
+                }
             }
 
-
-            //using (var mmFile = MemoryMappedFile.CreateFromFile(dataPath))
-            //{
-            //    var mmvStream = mmFile.CreateViewStream();
-
-            //    using (var sr = new StreamReader(mmvStream, Encoding.ASCII))
-            //    {
-            //        while (!sr.EndOfStream)
-            //        {
-            //            var logString = sr.ReadLine();
-            //            var log = _parserService.Parse(logString);
-
-            //            if (log == null)
-            //            {
-            //                continue;
-            //            }
-
-            //            log.Geolocation = await _geolocationService.GetGeolocation(log.Host);
-            //            _logRepository.Add(log);
-            //        }
-            //    }
-            //}
-
-
-            //using (var sr = new StreamReader(dataPath))
-            //{
-            //    while (!sr.EndOfStream)
-            //    {
-            //        var logString = sr.ReadLine();
-            //        var log = _parserService.Parse(logString);
-
-            //        if (log == null)
-            //        {
-            //            continue;
-            //        }
-
-            //        log.Geolocation = await _geolocationService.GetGeolocation(log.Host);
-            //        _logRepository.Add(log);
-            //    }
-            //}
-
             _logRepository.SaveChanges();
+            
+            return true;
         }
     }
 }

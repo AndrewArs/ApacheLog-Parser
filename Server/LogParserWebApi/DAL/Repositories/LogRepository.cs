@@ -32,7 +32,7 @@ namespace DAL.Repositories
         /// <param name="end">The end.</param>
         /// <param name="n">The n.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetTopHosts(DateTime? start, DateTime? end, int? n)
+        public async Task<IEnumerable<string>> GetTopHosts(DateTime? start, DateTime? end, int? n = 10)
         {
             return await _logContext.Logs.Where(CreateDateExpression(start, end))
                                          .GroupBy(log => log.Host)
@@ -49,7 +49,7 @@ namespace DAL.Repositories
         /// <param name="end">The end.</param>
         /// <param name="n">The n.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetTopRoutes(DateTime? start, DateTime? end, int? n)
+        public async Task<IEnumerable<string>> GetTopRoutes(DateTime? start, DateTime? end, int? n = 10)
         {
             return await _logContext.Logs.Where(CreateDateExpression(start, end))
                                          .GroupBy(log => log.Route)
@@ -67,7 +67,7 @@ namespace DAL.Repositories
         /// <param name="offset">The offset.</param>
         /// <param name="limit">The limit.</param>
         /// <returns></returns>
-        public async Task<IEnumerable<Log>> GetLogs(DateTime? start, DateTime? end, int? offset, int? limit)
+        public async Task<IEnumerable<Log>> GetLogs(DateTime? start, DateTime? end, int? offset = 0, int? limit = 10)
         {
             return await _logContext.Logs.Where(CreateDateExpression(start, end))
                                          .OrderBy(log => log.Date)
@@ -75,25 +75,29 @@ namespace DAL.Repositories
                                          .Take(limit.Value)
                                          .ToListAsync();
         }
-        
-        private Expression<Func<Log, bool>> CreateDateExpression(DateTime? start, DateTime? end)
+
+        /// <summary>
+        /// Creates the date expression.
+        /// </summary>
+        /// <param name="start">The start.</param>
+        /// <param name="end">The end.</param>
+        /// <returns></returns>
+        private static Expression<Func<Log, bool>> CreateDateExpression(DateTime? start, DateTime? end)
         {
             if(start.HasValue && end.HasValue)
             {
                 return log => log.Date >= start && log.Date <= end;
             }
-            else if(start.HasValue)
+            if(start.HasValue)
             {
                 return log => log.Date >= start;
             }
-            else if (end.HasValue)
+            if (end.HasValue)
             {
                 return log => log.Date <= end;
             }
-            else
-            {
-                return log => true;
-            }
+
+            return log => true;
         }
 
         /// <summary>

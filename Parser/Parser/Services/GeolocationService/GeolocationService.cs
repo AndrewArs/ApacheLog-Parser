@@ -1,7 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using DomainModels.Models;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Services.GeolocationService
 {
@@ -14,13 +13,13 @@ namespace Services.GeolocationService
         /// </summary>
         /// <param name="host">The host.</param>
         /// <returns></returns>
-        public async Task<Geolocation> GetGeolocation(string host)
+        public async Task<string> GetGeolocation(string host)
         {
             using (var client = new HttpClient())
             {
                 var resp = await client.GetAsync($"{ServiceUrl}{host}");
-
-                return resp.IsSuccessStatusCode ? JsonConvert.DeserializeObject<Geolocation>(await resp.Content.ReadAsStringAsync()) : null;
+                
+                return resp.IsSuccessStatusCode ? (string)JObject.Parse(await resp.Content.ReadAsStringAsync()).GetValue("country_name") : null;
             }
         }
     }

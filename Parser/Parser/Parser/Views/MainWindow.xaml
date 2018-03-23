@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Parser.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Parser" Height="202.119" Width="422.458">
     <Window.Resources>
         <viewModels:MainWindowViewModel x:Key="ViewModel"/>
     </Window.Resources>
@@ -14,18 +14,45 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Button Command="{Binding GetFileCommand}"
-                Content="SelectFile"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Grid.Row="0"
-                Padding="10"/>
-        <Button Command="{Binding ParseCommand}"
-                Content="Parse"
-                VerticalAlignment="Center"
-                HorizontalAlignment="Center"
-                Padding="10"
-                Grid.Row="1"
-                IsEnabled="{Binding IsEnabled}"/>
+        <ProgressBar Minimum="0"
+                     Maximum="100"
+                     IsIndeterminate="True"
+                     Grid.Row="0"
+                     Margin="30"
+                     Height="20"
+                     VerticalAlignment="Center">
+            <ProgressBar.Style>
+                <Style TargetType="ProgressBar">
+                    <Setter Property="Visibility" Value="Hidden" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsNotParsing}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
+        <Grid Grid.Row="1" IsEnabled="{Binding IsNotParsing}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Command="{Binding GetFileCommand}"
+                    Content="SelectFile"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Grid.Column="0"
+                    Padding="10"
+                    Margin="10"/>
+            <Button Command="{Binding ParseCommand}"
+                    Content="Parse"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="10"
+                    Margin="10"
+                    Grid.Column="1"
+                    IsEnabled="{Binding IsEnabled}"/>
+        </Grid>
     </Grid>
 </Window>

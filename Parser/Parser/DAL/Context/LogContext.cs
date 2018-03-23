@@ -13,14 +13,6 @@ namespace DAL.Context
         /// </value>
         public DbSet<Log> Logs { get; set; }
 
-        /// <summary>
-        /// Gets or sets the geolocations.
-        /// </summary>
-        /// <value>
-        /// The geolocations.
-        /// </value>
-        public DbSet<Geolocation> Geolocations { get; set; }
-
         /// <inheritdoc />
         /// <summary>
         /// Initializes a new instance of the <see cref="T:DAL.Context.LogContext" /> class.

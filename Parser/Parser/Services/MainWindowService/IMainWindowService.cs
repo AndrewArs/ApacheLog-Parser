@@ -4,6 +4,6 @@ namespace Services.MainWindowService
 {
     public interface IMainWindowService
     {
-        Task Parse(string dataPath);
+        Task<bool> Parse(string dataPath);
     }
 }

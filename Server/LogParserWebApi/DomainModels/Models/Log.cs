@@ -22,6 +22,6 @@ namespace DomainModels.Models
 
         public string Method { get; set; }
 
-        public Geolocation Geolocation { get; set; }
+        public string Geolocation { get; set; }
     }
 }

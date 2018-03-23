@@ -26,6 +26,13 @@ namespace Parser.ViewModels
             set => SetProperty(ref _isEnabled, value);
         }
 
+        private bool _isNotParsing = true;
+        public bool IsNotParsing
+        {
+            get => _isNotParsing;
+            set => SetProperty(ref _isNotParsing, value);
+        }
+
         /// <summary>
         /// Gets the parse command.
         /// </summary>
@@ -47,7 +54,8 @@ namespace Parser.ViewModels
         /// <returns></returns>
         private async Task Parse()
         {
-            await _mainWindowService.Parse(FilePath);
+            IsNotParsing = false;
+            IsNotParsing = await Task.Run(async () => await _mainWindowService.Parse(FilePath));
         }
 
         /// <summary>
@@ -58,8 +66,10 @@ namespace Parser.ViewModels
             var ofd = new OpenFileDialog { Multiselect = false };
             ofd.ShowDialog();
             FilePath = ofd.FileName;
-
-            IsEnabled = true;
+            if (!string.IsNullOrEmpty(FilePath))
+            {
+                IsEnabled = true;
+            }
         }
     }
 }
